@@ -1,0 +1,9 @@
+{
+  "name": "资源站 · 下载引导",
+  "short_name": "资源站",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f4f1",
+  "theme_color": "#f3f4f1",
+  "icons": []
+}
