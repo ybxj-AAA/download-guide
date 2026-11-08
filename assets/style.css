@@ -1,7 +1,6 @@
 /* =========================================================
    download-guide · 样式
-   浅色纸张风：米白底、细边框、黑字、一点点赭色强调
-   无渐变、无发光、无玻璃拟态，尽量像人写的页面
+   浅色纸张风：米白底、细边框、黑字、一点赭色强调
    ========================================================= */
 
 :root {
@@ -67,30 +66,34 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   gap: 12px;
 }
 
+/* 纯文字 logo：名字 + 一条短强调线 */
 .mark {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 15px;
-  letter-spacing: .01em;
+  letter-spacing: .02em;
+  color: var(--ink);
 }
 
-.mark-sq {
-  width: 14px;
-  height: 14px;
-  background: var(--ink);
-  border-radius: 2px;
+.mark-name {
   position: relative;
+  padding-bottom: 2px;
+  white-space: nowrap;
 }
-.mark-sq::after {
+
+.mark-name::after {
   content: "";
   position: absolute;
-  inset: 4px;
-  background: var(--paper);
+  left: 0;
+  right: 35%;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
 }
 
-.mark-txt { white-space: nowrap; }
+a.mark:hover .mark-name::after { right: 0; transition: right .25s ease; }
 
 .bar-tag {
   font-size: 12px;
@@ -216,10 +219,8 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   letter-spacing: .08em;
 }
 
-/* 占位状态的提示文字，注入真实广告后自动隐藏 */
-.ad-slot::after {
-  content: "广告位";
-}
+/* 占位提示文字，注入真实广告后自动隐藏 */
+.ad-slot::after { content: "广告位"; }
 .ad-slot[data-filled]::after { content: none; }
 .ad-slot[data-filled] {
   border-style: solid;
@@ -227,10 +228,8 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   display: block;
 }
 
-/* 高度自适应：按宽度用 clamp 推一个合理高度，再由内容顶开 */
-.ad-wide {
-  min-height: clamp(60px, 15vw, 92px);
-}
+/* 高度自适应：按宽度推一个合理高度，再由内容顶开 */
+.ad-wide { min-height: clamp(60px, 15vw, 92px); }
 
 .ad-row {
   display: grid;
@@ -239,9 +238,7 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   margin-top: 20px;
 }
 .ad-row .ad-slot { margin: 0; }
-.ad-box {
-  min-height: clamp(110px, 32vw, 250px);
-}
+.ad-box { min-height: clamp(110px, 32vw, 250px); }
 
 /* ---------- 倒计时 ---------- */
 .gate {
@@ -348,12 +345,7 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   margin-bottom: 8px;
 }
 
-.tips ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.tips ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 
 .tips li {
   position: relative;
@@ -393,7 +385,6 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   .sheet-title h1 { font-size: 17px; }
   .ad-row { grid-template-columns: 1fr; }
   .ad-box { min-height: 100px; }
-  .tips ul { gap: 5px; }
 }
 
 @media (max-width: 380px) {
@@ -405,7 +396,6 @@ img, iframe { display: block; max-width: 100%; border: 0; }
   * { transition: none !important; animation: none !important; }
 }
 
-/* 打印时去掉广告和按钮 */
 @media print {
   .bar, .foot, .ad-slot, .dl, .note, .gate { display: none !important; }
   .sheet { border: 0; }

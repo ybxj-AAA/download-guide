@@ -15,7 +15,14 @@
     if (el && v != null && v !== '') el.textContent = v;
   }
 
-  /* ---------- 1. 文件信息 ---------- */
+  /* ---------- 1. 站名 ---------- */
+  if (C.brand) {
+    text('brandName', C.brand);
+    text('footBrand', C.brand);
+    document.querySelectorAll('.crumb a')[0].textContent = C.brand;
+  }
+
+  /* ---------- 2. 文件信息 ---------- */
   text('fName', f.name);
   text('fSize', f.size);
   text('fVer', f.version);
@@ -23,12 +30,9 @@
   text('fDesc', f.desc);
   text('crName', f.name);          // 面包屑最后一项
   text('fIco', f.ext || 'ZIP');    // 文件类型缩写
-  if (f.name) document.title = f.name + ' - 文件下载';
+  if (f.name) document.title = f.name + (C.brand ? ' - ' + C.brand : ' - 文件下载');
 
-  var m = document.querySelector('.mark-txt');
-  if (m && C.brand) m.textContent = C.brand;
-
-  /* ---------- 2. 广告位注入 ----------
+  /* ---------- 3. 广告位注入 ----------
      ads.top / ads.side1 / ads.side2 可以是：
      - HTML 字符串（含 <a>/<img>/<iframe>/<ins>）
      - 空值 → 保留虚线占位，不塌陷
@@ -54,7 +58,7 @@
     }, true);
   });
 
-  /* ---------- 3. 下载地址校验 ---------- */
+  /* ---------- 4. 下载地址校验 ---------- */
   function safeUrl(url) {
     if (!url) return '';
     try {
@@ -65,7 +69,7 @@
   }
   var target = safeUrl(C.downloadUrl);
 
-  /* ---------- 4. 倒计时 ---------- */
+  /* ---------- 5. 倒计时 ---------- */
   var total = Math.max(0, parseInt(C.countdownSeconds, 10) || 0);
   text('gSpeed', C.speedText);
 
