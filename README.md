@@ -1,46 +1,57 @@
-# 下载引导页模板（download-guide）
+# download-guide
 
-可配置广告位的静态下载引导页：文件信息卡 + 限速倒计时 + 下载按钮 + 3 个广告位。
-纯 HTML/CSS/JS，零依赖，丢到任何静态托管上就能跑。
+下载引导页模板。纯 HTML / CSS / JS，无框架、无依赖。
 
-在线预览：https://ybxj-aaa.github.io/download-guide/
+在线：https://ybxj-aaa.github.io/download-guide/
 
-## 改什么
+## 改配置
 
-全部配置集中在 **`assets/config.js`**：
+只改 `assets/config.js`，其它文件不用动。
 
 ```js
 window.SITE_CONFIG = {
-  brand: '资源下载中心',
-  file: { name, icon, size, version, updated, desc, badge },
-  downloadUrl: 'https://...',   // 直链或网盘页
+  brand: '资源站',
+  file: {
+    name: 'xxx.zip',
+    ext: 'ZIP',
+    size: '128 MB',
+    version: 'v1.0.0',
+    updated: '2026-11-08',
+    desc: '一句话说明。'
+  },
+  downloadUrl: '',        // 直链或网盘页
+  downloadText: '立即下载',
   countdownSeconds: 5,
   speedText: '120 KB/s',
   ads: {
-    top: '<a href="..."><img src="..." alt=""></a>',
-    side1: '',
+    top:   '',            // 横幅 728×90
+    side1: '',            // 方块 300×250
     side2: ''
   },
-  adClickBeacon: ''   // 选填，广告点击上报
+  adClickBeacon: ''
 };
 ```
 
-## 广告位
+填完 push，Pages 约 1 分钟自动重建。
 
-| 位置 | 键名 | 建议尺寸 |
+## 广告位自适应
+
+不给广告写死高度，只给 `min-height` 保底：
+
+| 位置 | 保底高度 | 说明 |
 |---|---|---|
-| 文件卡下方横幅 | `ads.top` | 728×90 |
-| 下载按钮下方左 | `ads.side1` | 300×250 |
-| 下载按钮下方右 | `ads.side2` | 300×250 |
+| 横幅 `top` | `clamp(60px, 15vw, 92px)` | 窄屏变矮 |
+| 方块 `side1/2` | `clamp(110px, 32vw, 250px)` | 手机 ≤620px 时上下堆叠 |
 
-填 HTML 字符串即可，`<a>`、`<img>`、`<iframe>`、联盟 `<ins>` 都支持。不填就是虚线占位框。
+真实广告图或 iframe 撑高时自动跟随；`width: 100%` 自适应容器，不会溢出。
+不填广告时显示等高的虚线占位，**不会把页面撑塌**。
 
-## 安全约定
+## 安全
 
-- `downloadUrl` 只放行 `http/https/mailto`，`javascript:` 等协议会被丢弃
-- 页面默认 `noindex, nofollow`，避免引导页被搜索引擎收录造成降权
-- 倒计时结束前按钮不可点击，防止误触
+- `downloadUrl` 只放行 `http/https/mailto`
+- 页面 `noindex, nofollow`
+- 倒计时结束前按钮不可点
 
 ## 部署
 
-推送到 `main` 分支，仓库设置里 Pages 选 main / root 即可。
+GitHub Pages，源：`main` 分支根目录。

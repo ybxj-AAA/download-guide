@@ -2,100 +2,90 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <title>文件准备中 - 下载引导</title>
+  <meta name="theme-color" content="#f3f4f1">
+  <title>文件下载</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <main class="wrap">
-    <!-- 顶部品牌条 -->
-    <header class="topbar">
-      <a class="brand" href="./">
-        <span class="brand-dot"></span>
-        <span>资源下载中心</span>
+
+  <header class="bar">
+    <div class="bar-in">
+      <a class="mark" href="./">
+        <span class="mark-sq"></span>
+        <span class="mark-txt">资源站</span>
       </a>
-      <span class="topbar-note">安全下载 · 无插件</span>
-    </header>
+      <span class="bar-tag">文件下载</span>
+    </div>
+  </header>
 
-    <!-- 文件信息卡 -->
-    <section class="card file-card">
-      <div class="file-ico" aria-hidden="true" id="fileIco">📦</div>
-      <div class="file-meta">
-        <h1 id="fileName">示例文件_v2.3.1.zip</h1>
-        <p class="file-sub">
-          <span id="fileSize">128 MB</span>
-          <span class="sep">·</span>
-          <span id="fileVersion">版本 v2.3.1</span>
-          <span class="sep">·</span>
-          <span id="fileUpdated">2026-11-08</span>
-        </p>
-        <p class="file-desc" id="fileDesc">从官方源同步，已通过安全检查。下载前请先确认目标设备是否兼容。</p>
-      </div>
-      <span class="badge badge-ok" id="fileBadge">已验签</span>
-    </section>
+  <div class="page">
 
-    <!-- 广告位 1：横幅 -->
-    <aside class="ad ad-banner" aria-label="广告">
-      <span class="ad-label">广告</span>
-      <div class="ad-body" id="adTop">
-        <strong>这里放你的广告</strong>
-        <span>横幅位 728×90，支持任意 HTML / 图片 / iframe</span>
-      </div>
-    </aside>
-
-    <!-- 限速倒计时 -->
-    <section class="card countdown-card">
-      <div class="speed-row">
-        <span class="speed">当前下载速度限制：<b id="speedText">120 KB/s</b></span>
-        <span class="speed-tip">高峰期限速中</span>
-      </div>
-      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-      <p id="countdownText" class="countdown-text">正在准备下载链接：<b>5</b> 秒</p>
-    </section>
-
-    <!-- 下载按钮 -->
-    <section class="download-area">
-      <a id="downloadBtn" class="btn btn-primary" href="#" aria-disabled="true" rel="noopener noreferrer">
-        <span id="btnText">等待中…</span>
-        <span class="arrow" aria-hidden="true">⭳</span>
-      </a>
-      <p class="download-tip">若下载未开始，请关闭广告拦截插件后重试。</p>
-    </section>
-
-    <!-- 广告位 2：卡片 -->
-    <div class="ad-grid">
-      <aside class="ad ad-card" aria-label="广告">
-        <span class="ad-label">广告</span>
-        <div class="ad-body" id="adSide1">
-          <strong>侧栏广告位 1</strong>
-          <span>300×250</span>
-        </div>
-      </aside>
-      <aside class="ad ad-card" aria-label="广告">
-        <span class="ad-label">广告</span>
-        <div class="ad-body" id="adSide2">
-          <strong>侧栏广告位 2</strong>
-          <span>300×250</span>
-        </div>
-      </aside>
+    <div class="crumb">
+      <a href="./">首页</a>
+      <span>/</span>
+      <a href="./">工具软件</a>
+      <span>/</span>
+      <em id="crName">文件下载</em>
     </div>
 
-    <!-- 说明区域 -->
-    <section class="card steps">
-      <h2>下载说明</h2>
-      <ol>
-        <li>点击上方按钮开始下载，如未自动开始，请稍等几秒后重试。</li>
-        <li>本站文件均不留存，链接由官方源直链或可信网盘提供。</li>
-        <li>解压密码请以页面显示为准，遇到“文件损坏”请重新下载。</li>
-      </ol>
-    </section>
+    <article class="sheet">
 
-    <footer class="foot">
-      <p>© 2026 资源下载中心 · 本站不存储任何文件</p>
-      <p class="foot-muted">页面由 download-guide 模板生成</p>
-    </footer>
-  </main>
+      <div class="sheet-head">
+        <div class="fico" id="fIco" aria-hidden="true">ZIP</div>
+        <div class="sheet-title">
+          <h1 id="fName">文件名</h1>
+          <p class="meta">
+            <span id="fSize">—</span><i></i>
+            <span id="fVer">—</span><i></i>
+            <span id="fDate">—</span>
+            <span class="pill">已验签</span>
+          </p>
+        </div>
+      </div>
+
+      <p class="lede" id="fDesc">文件说明。</p>
+
+      <div class="ad-slot ad-wide" data-slot="top" aria-label="广告">
+        <span class="ad-tag">广告</span>
+      </div>
+
+      <div class="gate">
+        <div class="gate-row">
+          <span class="gate-label">当前速率限制</span>
+          <span class="gate-speed" id="gSpeed">—</span>
+        </div>
+        <div class="line"><span class="line-bar" id="gBar"></span></div>
+        <p class="gate-count" id="gCount">正在生成下载地址…</p>
+      </div>
+
+      <a class="dl" id="dlBtn" href="#" aria-disabled="true" rel="noopener noreferrer">
+        <span id="dlTxt">请稍候</span>
+      </a>
+
+      <p class="note">如无法开始下载，请关闭广告拦截插件后刷新本页重试。</p>
+
+      <div class="ad-row">
+        <div class="ad-slot ad-box" data-slot="side1" aria-label="广告"><span class="ad-tag">广告</span></div>
+        <div class="ad-slot ad-box" data-slot="side2" aria-label="广告"><span class="ad-tag">广告</span></div>
+      </div>
+
+      <section class="tips">
+        <h2>下载前请确认</h2>
+        <ul>
+          <li>本站不存储文件，链接均指向官方源或网盘。</li>
+          <li>如提示文件损坏，请重新下载，不要使用下载工具断点续传。</li>
+          <li>解压密码以页面标注为准。</li>
+        </ul>
+      </section>
+
+    </article>
+  </div>
+
+  <footer class="foot">
+    <p>本站不存储任何文件资源</p>
+  </footer>
 
   <script src="assets/config.js"></script>
   <script src="assets/main.js"></script>

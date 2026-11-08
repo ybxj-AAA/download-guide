@@ -1,94 +1,84 @@
-/* =====================================================
-   download-guide · 交互逻辑（零依赖，原生 JS）
-   ===================================================== */
+/* =========================================================
+   download-guide · 交互
+   原生 JS，无依赖
+   ========================================================= */
 (function () {
   'use strict';
 
-  var CFG = window.SITE_CONFIG || {};
-  var file = CFG.file || {};
-  var ads = CFG.ads || {};
+  var C = window.SITE_CONFIG || {};
+  var f = C.file || {};
+  var ads = C.ads || {};
 
   function $(id) { return document.getElementById(id); }
-  function setText(id, value) {
+  function text(id, v) {
     var el = $(id);
-    if (el && value) el.textContent = value;
+    if (el && v != null && v !== '') el.textContent = v;
   }
 
-  /* ---------- 1. 渲染文件信息 ---------- */
-  setText('fileName', file.name);
-  setText('fileSize', file.size);
-  setText('fileVersion', file.version);
-  setText('fileUpdated', file.updated);
-  setText('fileDesc', file.desc);
-  setText('fileBadge', file.badge);
-  setText('fileIco', file.icon);
-  if (file.name) document.title = file.name + ' - 下载';
+  /* ---------- 1. 文件信息 ---------- */
+  text('fName', f.name);
+  text('fSize', f.size);
+  text('fVer', f.version);
+  text('fDate', f.updated);
+  text('fDesc', f.desc);
+  text('crName', f.name);          // 面包屑最后一项
+  text('fIco', f.ext || 'ZIP');    // 文件类型缩写
+  if (f.name) document.title = f.name + ' - 文件下载';
 
-  var brandEl = document.querySelector('.brand span:last-child');
-  if (brandEl && CFG.brand) brandEl.textContent = CFG.brand;
-  var tagEl = document.querySelector('.topbar-note');
-  if (tagEl && CFG.tagline) tagEl.textContent = CFG.tagline;
+  var m = document.querySelector('.mark-txt');
+  if (m && C.brand) m.textContent = C.brand;
 
-  /* ---------- 2. 渲染广告位 ---------- */
-  var AD_SLOTS = { top: 'adTop', side1: 'adSide1', side2: 'adSide2' };
-  Object.keys(AD_SLOTS).forEach(function (key) {
-    var host = $(AD_SLOTS[key]);
-    if (!host) return;
+  /* ---------- 2. 广告位注入 ----------
+     ads.top / ads.side1 / ads.side2 可以是：
+     - HTML 字符串（含 <a>/<img>/<iframe>/<ins>）
+     - 空值 → 保留虚线占位，不塌陷
+  ------------------------------------ */
+  document.querySelectorAll('.ad-slot').forEach(function (box) {
+    var key = box.getAttribute('data-slot');
     var html = ads[key];
-    if (html && html.trim()) {
-      host.innerHTML = html;           // 广告主自己的 HTML，由站点主配置
-      host.classList.add('ad-loaded');
+    if (html && String(html).trim()) {
+      box.insertAdjacentHTML('beforeend', html);
+      box.setAttribute('data-filled', '');
     }
   });
 
-  /* ---------- 3. 广告点击上报（可选） ---------- */
-  function beacon(slot) {
-    if (!CFG.adClickBeacon) return;
-    try {
-      var payload = JSON.stringify({ slot: slot, path: location.pathname, ts: Date.now() });
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(CFG.adClickBeacon, payload);
-      } else {
-        fetch(CFG.adClickBeacon, { method: 'POST', body: payload, keepalive: true }).catch(function () {});
-      }
-    } catch (e) { /* 埋点失败不影响跳转 */ }
-  }
-  document.querySelectorAll('.ad').forEach(function (ad) {
-    ad.addEventListener('click', function () {
-      beacon(ad.querySelector('.ad-body') ? ad.querySelector('.ad-body').id : 'ad');
+  /* 广告点击统计（选填） */
+  document.querySelectorAll('.ad-slot').forEach(function (box) {
+    box.addEventListener('click', function () {
+      if (!C.adClickBeacon) return;
+      try {
+        var body = JSON.stringify({ slot: box.getAttribute('data-slot'), path: location.pathname, ts: Date.now() });
+        if (navigator.sendBeacon) navigator.sendBeacon(C.adClickBeacon, body);
+        else fetch(C.adClickBeacon, { method: 'POST', body: body, keepalive: true }).catch(function () {});
+      } catch (e) { /* 忽略 */ }
     }, true);
   });
 
-  /* ---------- 4. 下载链接合法性校验 ---------- */
+  /* ---------- 3. 下载地址校验 ---------- */
   function safeUrl(url) {
     if (!url) return '';
     try {
       var u = new URL(url, location.href);
-      // 只放行 http/https/mailto，挡住 javascript: 等协议
-      return (u.protocol === 'http:' || u.protocol === 'https:' || u.protocol === 'mailto:') ? u.href : '';
-    } catch (e) { return ''; }
+      if (u.protocol === 'http:' || u.protocol === 'https:' || u.protocol === 'mailto:') return u.href;
+    } catch (e) { /* 非法地址 */ }
+    return '';
   }
-  var target = safeUrl(CFG.downloadUrl);
+  var target = safeUrl(C.downloadUrl);
 
-  /* ---------- 5. 限速倒计时 ---------- */
-  var total = Math.max(0, parseInt(CFG.countdownSeconds, 10) || 0);
-  setText('speedText', CFG.speedText);
-  var speedTipEl = document.querySelector('.speed-tip');
-  if (speedTipEl && CFG.speedTip) speedTipEl.textContent = CFG.speedTip;
+  /* ---------- 4. 倒计时 ---------- */
+  var total = Math.max(0, parseInt(C.countdownSeconds, 10) || 0);
+  text('gSpeed', C.speedText);
 
-  var btn = $('downloadBtn');
-  var btnText = $('btnText');
-  var barFill = $('barFill');
-  var countdownText = $('countdownText');
-  var remain = total;
+  var btn = $('dlBtn'), btnTxt = $('dlTxt'), bar = $('gBar'), cnt = $('gCount');
+  var left = total;
 
-  function renderCountdown() {
-    if (countdownText) {
-      countdownText.innerHTML = remain > 0
-        ? '正在准备下载链接：<b>' + remain + '</b> 秒'
-        : '链接已就绪，可以下载了';
+  function paint() {
+    if (cnt) {
+      cnt.innerHTML = left > 0
+        ? '链接生成中：<b>' + left + '</b> 秒'
+        : '链接已就绪';
     }
-    if (barFill) barFill.style.width = ((total - remain) / (total || 1) * 100) + '%';
+    if (bar) bar.style.width = ((total - left) / (total || 1) * 100) + '%';
   }
 
   function unlock() {
@@ -96,35 +86,28 @@
     if (target) {
       btn.href = target;
       btn.setAttribute('aria-disabled', 'false');
-      btn.classList.add('ready');
-      btnText.textContent = CFG.downloadText || '立即下载';
+      btnTxt.textContent = C.downloadText || '立即下载';
     } else {
-      btnText.textContent = '下载地址未配置';
-      btn.classList.add('disabled');
+      btnTxt.textContent = '下载地址未配置';
+      btn.classList.add('dead');
     }
   }
 
-  renderCountdown();
-  if (remain > 0) {
-    var timer = setInterval(function () {
-      remain -= 1;
-      renderCountdown();
-      if (remain <= 0) {
-        clearInterval(timer);
-        unlock();
-      }
+  paint();
+  if (left > 0) {
+    var t = setInterval(function () {
+      left -= 1;
+      paint();
+      if (left <= 0) { clearInterval(t); unlock(); }
     }, 1000);
   } else {
     unlock();
   }
 
-  /* ---------- 6. 防止倒计时期间误点 ---------- */
+  /* 倒计时中禁止跳转 */
   if (btn) {
     btn.addEventListener('click', function (e) {
-      if (btn.getAttribute('aria-disabled') === 'true') {
-        e.preventDefault();
-      }
+      if (btn.getAttribute('aria-disabled') === 'true') e.preventDefault();
     });
   }
-  window.__DG_READY__ = function () { return target !== ''; };
 })();
