@@ -19,7 +19,8 @@
   if (C.brand) {
     text('brandName', C.brand);
     text('footBrand', C.brand);
-    document.querySelectorAll('.crumb a')[0].textContent = C.brand;
+    var firstCrumb = document.querySelectorAll('.crumb a')[0];
+    if (firstCrumb) firstCrumb.textContent = C.brand;
   }
 
   /* ---------- 2. 文件信息 ---------- */
@@ -28,21 +29,25 @@
   text('fVer', f.version);
   text('fDate', f.updated);
   text('fDesc', f.desc);
-  text('crName', f.name);          // 面包屑最后一项
-  text('fIco', f.ext || 'ZIP');    // 文件类型缩写
+  text('crName', f.name);
+  text('fIco', f.ext || 'ZIP');
   if (f.name) document.title = f.name + (C.brand ? ' - ' + C.brand : ' - 文件下载');
 
-  /* ---------- 3. 广告位注入 ----------
-     ads.top / ads.side1 / ads.side2 可以是：
-     - HTML 字符串（含 <a>/<img>/<iframe>/<ins>）
-     - 空值 → 保留虚线占位，不塌陷
-  ------------------------------------ */
+  /* ---------- 3. 广告位注入 ---------- */
   document.querySelectorAll('.ad-slot').forEach(function (box) {
     var key = box.getAttribute('data-slot');
     var html = ads[key];
     if (html && String(html).trim()) {
       box.insertAdjacentHTML('beforeend', html);
       box.setAttribute('data-filled', '');
+      // 广告位内没有 <a> 时，整个广告位变成可点击链接
+      if (!box.querySelector('a') && C.downloadUrl) {
+        box.style.cursor = 'pointer';
+        box.addEventListener('click', function (e) {
+          if (e.target.closest('a')) return;
+          window.open(C.downloadUrl, '_blank', 'noopener');
+        });
+      }
     }
   });
 
@@ -69,18 +74,19 @@
   }
   var target = safeUrl(C.downloadUrl);
 
-  /* ---------- 5. 倒计时 ---------- */
+  /* ---------- 5. 倒计时 + 自动跳转 ---------- */
   var total = Math.max(0, parseInt(C.countdownSeconds, 10) || 0);
   text('gSpeed', C.speedText);
 
   var btn = $('dlBtn'), btnTxt = $('dlTxt'), bar = $('gBar'), cnt = $('gCount');
   var left = total;
+  var jumped = false;
 
   function paint() {
     if (cnt) {
       cnt.innerHTML = left > 0
-        ? '链接生成中：<b>' + left + '</b> 秒'
-        : '链接已就绪';
+        ? '页面将在 <b>' + left + '</b> 秒后自动跳转'
+        : '正在跳转…';
     }
     if (bar) bar.style.width = ((total - left) / (total || 1) * 100) + '%';
   }
@@ -90,10 +96,21 @@
     if (target) {
       btn.href = target;
       btn.setAttribute('aria-disabled', 'false');
-      btnTxt.textContent = C.downloadText || '立即下载';
+      btnTxt.textContent = C.downloadText || '点击下载';
     } else {
       btnTxt.textContent = '下载地址未配置';
       btn.classList.add('dead');
+    }
+  }
+
+  function autoJump() {
+    if (jumped || !target) return;
+    jumped = true;
+    try {
+      // 自动跳当前页，避免被浏览器当作弹窗拦截
+      location.href = target;
+    } catch (e) {
+      window.open(target, '_blank', 'noopener');
     }
   }
 
@@ -102,16 +119,28 @@
     var t = setInterval(function () {
       left -= 1;
       paint();
-      if (left <= 0) { clearInterval(t); unlock(); }
+      if (left <= 0) {
+        clearInterval(t);
+        unlock();
+        autoJump();
+      }
     }, 1000);
   } else {
     unlock();
+    autoJump();
   }
 
-  /* 倒计时中禁止跳转 */
+  /* 倒计时中禁止手动跳转 */
   if (btn) {
     btn.addEventListener('click', function (e) {
-      if (btn.getAttribute('aria-disabled') === 'true') e.preventDefault();
+      if (btn.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; }
+      jumped = true;
+    });
+  }
+  if (target) {
+    document.addEventListener('visibilitychange', function () {
+      // 用户切走了就不用再跳
+      if (document.visibilityState === 'hidden') jumped = true;
     });
   }
 })();
