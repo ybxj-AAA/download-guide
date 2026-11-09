@@ -13,17 +13,17 @@
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);font-size:14px;line-height:1.7;color:var(--ink);background:var(--bg);padding:0 0 90px}
+body{font-family:var(--font);font-size:14px;line-height:1.7;color:var(--ink);background:var(--bg);padding:0 0 100px}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:920px;margin:0 auto;padding:0 clamp(14px,3vw,28px)}
 header{border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:10}
-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px;flex-wrap:wrap}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
 .brand{font-weight:600;font-size:16px}
 .brand b{color:var(--accent);font-weight:600}
 .hint{font-size:12px;color:var(--ink3)}
-main{padding-top:22px;display:flex;flex-direction:column;gap:16px}
+main{padding-top:18px;display:flex;flex-direction:column;gap:16px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:clamp(14px,2.4vw,22px)}
-.card h2{font-size:13px;font-weight:600;color:var(--ink2);letter-spacing:.04em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line2)}
+.card h2{font-size:13px;font-weight:600;color:var(--ink2);letter-spacing:.04em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;gap:10px}
 .row{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
 .row:last-child{margin-bottom:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -31,7 +31,7 @@ main{padding-top:22px;display:flex;flex-direction:column;gap:16px}
 label{font-size:12.5px;color:var(--ink2);font-weight:500}
 label .req{color:var(--err);margin-left:2px}
 label .opt{color:var(--ink3);font-weight:400;font-size:11.5px;margin-left:4px}
-input[type=text],input[type=url],input[type=number],textarea{
+input[type=text],input[type=url],input[type=password],input[type=number],textarea{
   width:100%;font-family:inherit;font-size:13.5px;color:var(--ink);
   background:#fbfcfb;border:1px solid var(--line);border-radius:3px;
   padding:8px 10px;transition:border-color .15s,background .15s;
@@ -39,22 +39,24 @@ input[type=text],input[type=url],input[type=number],textarea{
 input:focus,textarea:focus{outline:none;border-color:var(--accent);background:#fff}
 textarea{font-family:var(--mono);font-size:12.5px;line-height:1.6;resize:vertical;min-height:64px}
 small{font-size:11.5px;color:var(--ink3)}
-.actions{position:fixed;left:0;right:0;bottom:0;background:rgba(251,251,249,.97);backdrop-filter:blur(6px);border-top:1px solid var(--line);z-index:20}
+.actions{position:fixed;left:0;right:0;bottom:0;background:rgba(251,251,249,.98);backdrop-filter:blur(6px);border-top:1px solid var(--line);z-index:20}
 .actions .wrap{display:flex;gap:10px;align-items:center;padding-top:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom));flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:500;
   padding:9px 16px;border-radius:4px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:all .15s;white-space:nowrap}
 .btn:hover{border-color:#c4c9c2}
+.btn:disabled{opacity:.55;cursor:not-allowed}
 .btn-main{background:var(--ink);border-color:var(--ink);color:#f7f7f4}
-.btn-main:hover{background:var(--accent);border-color:var(--accent)}
+.btn-main:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
 .btn-soft{background:#f3f4f0}
 .spacer{flex:1}
 .msg{font-size:12.5px;min-height:20px;line-height:20px}
 .msg.ok{color:var(--ok)}
 .msg.err{color:var(--err)}
 .preview{border:1px dashed var(--line);border-radius:4px;padding:10px;min-height:70px;background:#fafbf8;
-  display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:11.5px;text-align:center}
+  display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:11.5px;text-align:center;overflow:hidden}
 .preview img{max-width:100%;height:auto;display:block}
 .preview iframe{max-width:100%}
+.preview a{display:block;width:100%}
 details.card{padding:0}
 details.card summary{cursor:pointer;list-style:none;padding:clamp(14px,2.4vw,22px);font-size:13px;font-weight:600;color:var(--ink2);
   letter-spacing:.04em;display:flex;align-items:center;justify-content:space-between}
@@ -63,13 +65,25 @@ details.card summary::after{content:"展开";font-size:12px;font-weight:400;colo
 details[open].card summary::after{content:"收起"}
 details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
 .danger{color:var(--err)}
+/* 状态标记 */
+.state{font-size:11.5px;font-weight:400;padding:2px 8px;border-radius:999px;letter-spacing:0}
+.state.on{background:#eef4f0;color:var(--ok);border:1px solid #c9dbd0}
+.state.off{background:#f6f1ec;color:#9c6a4a;border:1px solid #e3d5c8}
+/* 保存成功提示条 */
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:50;
+  background:var(--ink);color:#f7f7f4;font-size:13.5px;padding:11px 20px;border-radius:5px;opacity:0;
+  pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 8px 24px rgba(0,0,0,.16);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:#8e3333}
+a.link{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 @media (max-width:640px){
   .grid2{grid-template-columns:1fr;gap:14px}
   .grid2 .row{margin-bottom:0}
   .actions .wrap{padding-top:10px}
-  .btn{flex:1;justify-content:center}
+  .btn{flex:1;justify-content:center;min-width:calc(50% - 5px)}
   .spacer{display:none}
-  .msg{flex-basis:100%;text-align:center}
+  .msg{flex-basis:100%;text-align:center;order:9}
+  .toast{top:auto;bottom:96px}
 }
 </style>
 </head>
@@ -77,12 +91,46 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
 
 <header>
   <div class="wrap">
-    <div class="brand">资源站 · <b>后台配置</b></div>
-    <div class="hint">改完点「生成配置」→ 复制 → 粘贴到 config.js</div>
+    <div class="brand">圣淘沙 · <b>后台配置</b></div>
+    <div class="hint">改完点「保存并发布」直接生效</div>
   </div>
 </header>
 
 <main class="wrap">
+
+  <!-- 发布连接状态 -->
+  <section class="card" id="connCard">
+    <h2>发布连接 <span class="state off" id="connState">未连接</span></h2>
+    <div id="connSetup">
+      <div class="row">
+        <label for="token">GitHub Token <span class="req">*</span></label>
+        <input type="password" id="token" placeholder="github_pat_... 或 ghp_..." autocomplete="off" spellcheck="false">
+        <small>
+          需要 <b>fine-grained token</b>，只勾选 <b>ybxj-AAA/download-guide</b> 这一个仓库，
+          权限给 <b>Contents: Read and write</b>。Token 只存在你浏览器本地，不上传任何服务器。
+        </small>
+      </div>
+      <div class="row">
+        <small>创建地址：<a class="link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">New fine-grained personal access token</a></small>
+      </div>
+      <div class="row" style="flex-direction:row;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-soft" id="saveToken" type="button">保存 Token</button>
+        <button class="btn btn-soft" id="testConn" type="button">测试连接</button>
+      </div>
+      <div class="row">
+        <small id="connInfo"></small>
+      </div>
+    </div>
+    <div id="connOk" style="display:none">
+      <div class="row">
+        <small id="connOkInfo"></small>
+      </div>
+      <div class="row" style="flex-direction:row;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-soft" id="changeToken" type="button">更换 Token</button>
+        <button class="btn btn-soft" id="forgetToken" type="button">删除 Token</button>
+      </div>
+    </div>
+  </section>
 
   <section class="card">
     <h2>站点</h2>
@@ -95,8 +143,8 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
   <section class="card">
     <h2>文件信息</h2>
     <div class="row">
-      <label for="fname">文件名 <span class="req">*</span></label>
-      <input type="text" id="fname" placeholder="微信安装包_v3.9.12.zip">
+      <label for="fname">文件名 <span class="opt">别填网址，会显得像钓鱼页</span></label>
+      <input type="text" id="fname" placeholder="棋牌客户端安装包.zip">
     </div>
     <div class="grid2">
       <div class="row">
@@ -106,7 +154,7 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
       </div>
       <div class="row">
         <label for="fsize">文件大小</label>
-        <input type="text" id="fsize" placeholder="128 MB">
+        <input type="text" id="fsize" placeholder="86 MB">
       </div>
       <div class="row">
         <label for="fver">版本</label>
@@ -133,7 +181,7 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     <div class="grid2">
       <div class="row">
         <label for="dltext">按钮文字</label>
-        <input type="text" id="dltext" placeholder="立即下载">
+        <input type="text" id="dltext" placeholder="点击下载">
       </div>
       <div class="row">
         <label for="cd">等待秒数</label>
@@ -152,7 +200,7 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
 
     <div class="row">
       <label for="adTop">顶部横幅 <span class="opt">建议 728×90</span></label>
-      <textarea id="adTop" placeholder='<a href="广告链接"><img src="图片地址" alt=""></a>'></textarea>
+      <textarea id="adTop" placeholder='<a href="广告链接" style="display:block;padding:18px;background:#1c1f1c;color:#fff;text-align:center;">广告文案 →</a>'></textarea>
       <div class="preview" id="pvTop">广告预览</div>
     </div>
 
@@ -175,10 +223,10 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
   </section>
 
   <details class="card" id="outBox">
-    <summary>生成的配置 / 导入已有配置</summary>
+    <summary>生成的代码 / 导入已有配置</summary>
     <div class="inner">
       <div class="row">
-        <label for="out">config.js 内容</label>
+        <label for="out">config.js 内容 <span class="opt">点「预览代码」生成</span></label>
         <textarea id="out" rows="18" readonly style="min-height:300px"></textarea>
       </div>
       <div class="row">
@@ -192,50 +240,90 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
 
 <div class="actions">
   <div class="wrap">
-    <button class="btn btn-main" id="gen">生成配置</button>
-    <button class="btn" id="copy">复制</button>
-    <button class="btn btn-soft" id="download">下载 config.js</button>
+    <button class="btn btn-main" id="publish">保存并发布</button>
+    <button class="btn" id="previewBtn">预览代码</button>
+    <button class="btn btn-soft" id="copy">复制</button>
     <button class="btn btn-soft" id="importBtn">导入</button>
-    <button class="btn danger" id="reset">清空</button>
+    <button class="btn btn-soft" id="reset">清空</button>
     <span class="spacer"></span>
     <span class="msg" id="msg"></span>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 (function () {
   'use strict';
 
-  var KEY = 'dg_admin_form_v1';
+  var FORM_KEY = 'dg_admin_form_v2';
+  var TOKEN_KEY = 'dg_gh_token_v1';
+
+  var OWNER = 'ybxj-AAA';
+  var REPO = 'download-guide';
+  var BRANCH = 'gh-pages';
+  var FILE = 'assets/config.js';
+  var ACCEPT_TOKEN_PREFIXES = ['ghp_', 'github_pat_', 'gho_', 'ghu_', 'ghs_'];
+
   var ids = ['brand','fname','fext','fsize','fver','fdate','fdesc','dlurl','dltext','cd','speed','adTop','adSide1','adSide2','beacon'];
   var $ = function (id) { return document.getElementById(id); };
   var msgEl = $('msg');
 
+  /* ================= 提示 ================= */
   function setMsg(text, kind) {
     msgEl.textContent = text || '';
     msgEl.className = 'msg' + (kind ? ' ' + kind : '');
   }
+  var toastTimer = null;
+  function toast(text, isErr) {
+    var el = $('toast');
+    el.textContent = text;
+    el.className = 'toast show' + (isErr ? ' err' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.className = 'toast' + (isErr ? ' err' : ''); }, 3200);
+  }
 
-  /* ---------- 表单 ⇄ localStorage ---------- */
+  /* ================= Token 存取（仅本地） ================= */
+  function getToken() {
+    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setToken(v) {
+    try { localStorage.setItem(TOKEN_KEY, v); } catch (e) {}
+  }
+  function clearToken() {
+    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+  }
+
+  function renderConn() {
+    var tk = getToken();
+    var has = !!tk;
+    $('connState').textContent = has ? '已连接' : '未连接';
+    $('connState').className = 'state ' + (has ? 'on' : 'off');
+    $('connSetup').style.display = has ? 'none' : 'block';
+    $('connOk').style.display = has ? 'block' : 'none';
+    if (has) {
+      $('connOkInfo').innerHTML = '已保存 Token（' + tk.slice(0, 10) + '…），目标是 <b>' +
+        OWNER + '/' + REPO + '</b> 的 <b>' + BRANCH + '</b> 分支。<br>点「保存并发布」即可直接推送到网站。';
+    }
+    $('publish').disabled = !has;
+    $('publish').title = has ? '' : '先在上方保存 GitHub Token';
+  }
+
+  /* ================= 表单存取 ================= */
   function readForm() {
     var o = {};
     ids.forEach(function (k) { o[k] = $(k).value; });
     return o;
   }
-
   function fillForm(o) {
-    ids.forEach(function (k) {
-      if (o[k] != null) $(k).value = o[k];
-    });
+    ids.forEach(function (k) { if (o[k] != null) $(k).value = o[k]; });
   }
-
   function saveDraft() {
-    try { localStorage.setItem(KEY, JSON.stringify(readForm())); } catch (e) {}
+    try { localStorage.setItem(FORM_KEY, JSON.stringify(readForm())); } catch (e) {}
   }
-
   function loadDraft() {
     try {
-      var raw = localStorage.getItem(KEY);
+      var raw = localStorage.getItem(FORM_KEY);
       if (raw) fillForm(JSON.parse(raw));
     } catch (e) {}
   }
@@ -247,7 +335,7 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     });
   });
 
-  /* ---------- 广告预览 ---------- */
+  /* ================= 广告预览 ================= */
   function renderPreview(key) {
     var map = { adTop: 'pvTop', adSide1: 'pvSide1', adSide2: 'pvSide2' };
     var host = $(map[key]);
@@ -260,10 +348,9 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     box.innerHTML = html;
     host.appendChild(box);
   }
-
   ['adTop','adSide1','adSide2'].forEach(renderPreview);
 
-  /* ---------- 生成 config.js ---------- */
+  /* ================= 生成 config.js ================= */
   function q(s) {
     return "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
   }
@@ -289,7 +376,7 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     L.push('  },');
     L.push('');
     L.push('  downloadUrl: ' + q((g.dlurl || '').trim()) + ',');
-    L.push('  downloadText: ' + q(g.dltext || '立即下载') + ',');
+    L.push('  downloadText: ' + q(g.dltext || '点击下载') + ',');
     L.push('  countdownSeconds: ' + (parseInt(g.cd, 10) >= 0 ? parseInt(g.cd, 10) : 5) + ',');
     L.push('  speedText: ' + q(g.speed || '120 KB/s') + ',');
     L.push('');
@@ -305,21 +392,171 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     return L.join('\n');
   }
 
-  $('gen').addEventListener('click', function () {
-    var out = buildConfig();
-    $('out').value = out;
-    var box = $('outBox');
-    if (box) box.open = true;
+  /* ================= GitHub API ================= */
+  function ghHeaders(tk) {
+    return {
+      'Authorization': 'Bearer ' + tk,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+  }
+
+  function ghError(status, body) {
+    var m = '';
+    try { m = (JSON.parse(body).message) || ''; } catch (e) { m = body || ''; }
+    if (status === 401) return 'Token 无效或已过期（401）';
+    if (status === 403) return 'Token 没有写入权限，或触发了频率限制（403）';
+    if (status === 404) return '找不到仓库或分支，或 Token 没有访问该仓库的授权（404）';
+    if (status === 409) return '文件冲突，请稍后重试（409）';
+    if (status === 422) return '提交被拒绝：' + (m || '参数有问题') + '（422）';
+    return '请求失败 ' + status + (m ? '：' + m : '');
+  }
+
+  /* 读取当前文件 sha，不存在返回 '' */
+  function getFileSha(tk) {
+    var url = 'https://api.github.com/repos/' + OWNER + '/' + REPO +
+      '/contents/' + FILE + '?ref=' + encodeURIComponent(BRANCH);
+    return fetch(url, { headers: ghHeaders(tk) })
+      .then(function (r) {
+        if (r.status === 404) return '';                 // 文件尚无，可新建
+        if (!r.ok) return r.text().then(function (b) { throw new Error(ghError(r.status, b)); });
+        return r.json().then(function (j) { return j.sha || ''; });
+      });
+  }
+
+  /* 提交文件 */
+  function putFile(tk, content, sha, message) {
+    var url = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + FILE;
+    var payload = {
+      message: message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      branch: BRANCH
+    };
+    if (sha) payload.sha = sha;
+    return fetch(url, {
+      method: 'PUT',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(tk)),
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) return r.text().then(function (b) { throw new Error(ghError(r.status, b)); });
+      return r.json();
+    });
+  }
+
+  /* ================= 一键发布 ================= */
+  var publishing = false;
+
+  function publish() {
+    if (publishing) return;
+    var tk = getToken();
+    if (!tk) { setMsg('先保存 GitHub Token', 'err'); toast('先保存 GitHub Token', true); return; }
+
+    var content = buildConfig();
+
+    // 简单自检：确保生成内容能被解析
+    try { new Function(content); }
+    catch (e) { setMsg('生成的代码有语法问题：' + e.message, 'err'); toast('生成的代码有误', true); return; }
+
+    publishing = true;
+    var btn = $('publish');
+    btn.disabled = true;
+    var oldText = btn.textContent;
+    btn.textContent = '发布中…';
+    setMsg('正在推送到 GitHub…');
+
+    getFileSha(tk)
+      .then(function (sha) {
+        return putFile(tk, content, sha, '后台更新配置 ' + new Date().toLocaleString('zh-CN'));
+      })
+      .then(function () {
+        setMsg('已推送，约 1 分钟后生效', 'ok');
+        toast('✅ 已保存并发布，约 1 分钟后生效');
+      })
+      .catch(function (err) {
+        setMsg(err.message || String(err), 'err');
+        toast('发布失败：' + (err.message || err), true);
+        throw err;
+      })
+      .finally(function () {
+        publishing = false;
+        btn.disabled = false;
+        btn.textContent = oldText;
+      });
+  }
+
+  /* ================= 事件绑定 ================= */
+  $('publish').addEventListener('click', publish);
+
+  $('saveToken').addEventListener('click', function () {
+    var v = $('token').value.trim();
+    if (!v) { $('connInfo').textContent = '请先粘贴 Token'; $('connInfo').style.color = 'var(--err)'; return; }
+    var okPrefix = ACCEPT_TOKEN_PREFIXES.some(function (p) { return v.indexOf(p) === 0; });
+    if (!okPrefix) {
+      $('connInfo').textContent = '看起来不像 GitHub Token（应以 ghp_ 或 github_pat_ 开头）';
+      $('connInfo').style.color = 'var(--err)';
+      return;
+    }
+    setToken(v);
+    $('token').value = '';
+    renderConn();
+    $('connInfo').textContent = '';
+    toast('Token 已保存在本机浏览器');
+    // 存完立刻测一下
+    testConn();
+  });
+
+  $('changeToken').addEventListener('click', function () {
+    clearToken();
+    renderConn();
+    $('connInfo').textContent = '';
+  });
+
+  $('forgetToken').addEventListener('click', function () {
+    if (!confirm('删除浏览器里保存的 Token？删除后需重新粘贴才能发布。')) return;
+    clearToken();
+    renderConn();
+    setMsg('Token 已删除', 'ok');
+  });
+
+  function testConn() {
+    var tk = getToken();
+    if (!tk) { setMsg('先保存 Token', 'err'); return; }
+    var info = $('connInfo');
+    if (info) { info.textContent = '测试中…'; info.style.color = 'var(--ink3)'; }
+    setMsg('测试连接中…');
+    fetch('https://api.github.com/repos/' + OWNER + '/' + REPO, { headers: ghHeaders(tk) })
+      .then(function (r) {
+        if (!r.ok) return r.text().then(function (b) { throw new Error(ghError(r.status, b)); });
+        return r.json().then(function (j) { return j.permissions || {}; });
+      })
+      .then(function (perm) {
+        var canWrite = perm.push === true || perm.push === undefined;
+        var txt = '连接成功 · ' + OWNER + '/' + REPO + (canWrite ? '' : '（只读，无法发布）');
+        if (info) { info.textContent = txt; info.style.color = canWrite ? 'var(--ok)' : 'var(--err)'; }
+        setMsg(canWrite ? 'Token 可用，可以发布了' : 'Token 没有写权限', canWrite ? 'ok' : 'err');
+        if (canWrite) toast('连接正常，可以发布了');
+      })
+      .catch(function (err) {
+        if (info) { info.textContent = err.message; info.style.color = 'var(--err)'; }
+        setMsg(err.message, 'err');
+        toast('连接失败：' + err.message, true);
+      });
+  }
+  $('testConn').addEventListener('click', testConn);
+
+  $('previewBtn').addEventListener('click', function () {
+    $('out').value = buildConfig();
+    $('outBox').open = true;
     $('out').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setMsg('已生成，点「复制」带走', 'ok');
+    setMsg('已生成代码，可复制', 'ok');
   });
 
   $('copy').addEventListener('click', function () {
     var out = $('out');
-    if (!out.value.trim()) { setMsg('先点「生成配置」', 'err'); return; }
+    if (!out.value.trim()) out.value = buildConfig();
     out.select();
     out.setSelectionRange(0, 999999);
-    var done = function () { setMsg('已复制到剪贴板', 'ok'); };
+    var done = function () { setMsg('已复制到剪贴板', 'ok'); toast('已复制'); };
     var fail = function () {
       try { document.execCommand('copy'); done(); }
       catch (e) { setMsg('复制失败，请手动全选复制', 'err'); }
@@ -329,28 +566,12 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     } else { fail(); }
   });
 
-  $('download').addEventListener('click', function () {
-    var txt = $('out').value.trim() || buildConfig();
-    $('out').value = txt;
-    var blob = new Blob([txt], { type: 'text/javascript;charset=utf-8' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'config.js';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
-    setMsg('已下载 config.js', 'ok');
-  });
-
-  /* ---------- 导入旧配置 ---------- */
   $('importBtn').addEventListener('click', function () {
     var raw = $('inp').value.trim();
     if (!raw) { setMsg('先粘贴旧配置', 'err'); return; }
     var fakeWindow = { SITE_CONFIG: null };
     try {
-      var fn = new Function('window', raw);
-      fn(fakeWindow);
+      new Function('window', raw)(fakeWindow);
     } catch (e) {
       setMsg('解析失败：' + e.message, 'err');
       return;
@@ -372,19 +593,47 @@ details.card .inner{padding:0 clamp(14px,2.4vw,22px) clamp(14px,2.4vw,22px)}
     setMsg('已导入，可以继续编辑', 'ok');
   });
 
-  /* ---------- 清空 ---------- */
   $('reset').addEventListener('click', function () {
-    if (!confirm('清空表单内容？本地草稿也会删除。')) return;
+    if (!confirm('清空表单内容？本地草稿也会删除（Token 不受影响）。')) return;
     ids.forEach(function (k) { $(k).value = ''; });
     ['adTop','adSide1','adSide2'].forEach(renderPreview);
     $('out').value = '';
     $('inp').value = '';
-    try { localStorage.removeItem(KEY); } catch (e) {}
+    try { localStorage.removeItem(FORM_KEY); } catch (e) {}
     setMsg('已清空', 'ok');
   });
 
+  /* ================= 启动 ================= */
   loadDraft();
   ['adTop','adSide1','adSide2'].forEach(renderPreview);
+  renderConn();
+
+  // 自动载入线上现有配置（首次打开且表单为空时）
+  if (!$('brand').value) {
+    fetch('assets/config.js?t=' + Date.now())
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (t) {
+        if (!t) return;
+        var fakeWindow = { SITE_CONFIG: null };
+        try { new Function('window', t)(fakeWindow); } catch (e) { return; }
+        var tmp = fakeWindow.SITE_CONFIG || {};
+        if (!tmp.brand) return;
+        var f = tmp.file || {}, ads = tmp.ads || {};
+        fillForm({
+          brand: tmp.brand,
+          fname: f.name || '', fext: f.ext || '', fsize: f.size || '',
+          fver: f.version || '', fdate: f.updated || '', fdesc: f.desc || '',
+          dlurl: tmp.downloadUrl || '', dltext: tmp.downloadText || '',
+          cd: tmp.countdownSeconds != null ? tmp.countdownSeconds : '',
+          speed: tmp.speedText || '',
+          adTop: ads.top || '', adSide1: ads.side1 || '', adSide2: ads.side2 || '',
+          beacon: tmp.adClickBeacon || ''
+        });
+        ['adTop','adSide1','adSide2'].forEach(renderPreview);
+        setMsg('已载入站点当前配置', 'ok');
+      })
+      .catch(function () {});
+  }
 })();
 </script>
 </body>
