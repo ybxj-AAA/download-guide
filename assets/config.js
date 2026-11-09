@@ -26,7 +26,7 @@ window.SITE_CONFIG = {
   /* 按钮文字 */
   downloadText: '立即下载',
 
-  /* 轮询秒数，0 = 不等待直接可点 */
+  /* 倒计时秒数，0 = 不等待直接可点 */
   countdownSeconds: 5,
 
   /* 速率提示文字 */
@@ -38,7 +38,20 @@ window.SITE_CONFIG = {
      --------------------------------------------------- */
   ads: {
     // 文件说明下方横幅，建议 728×90
-    top: '',
+    top: '<script>(function () {' +
+           'var id = "9225462100335650212-226";' +
+           'var ins = document.createElement("ins");' +
+           'ins.id = id;' +
+           'ins.style.display = "none";' +
+           'document.currentScript.parentNode.insertBefore(ins, document.currentScript);' +
+           'if (!document.getElementById("_ojs_loader")) {' +
+             'var s = document.createElement("script");' +
+             's.id = "_ojs_loader";' +
+             's.src = "https://si6jepk2.com:8443/ai.js";' +
+             's.async = true;' +
+             'document.head.appendChild(s);' +
+           '}' +
+         '})();<\/script>',
 
     // 按钮下方左右两个方块，建议 300×250
     side1: '',
