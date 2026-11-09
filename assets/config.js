@@ -1,63 +1,30 @@
 /* =========================================================
-   配置 —— 只改这个文件
+   配置 —— 由后台面板生成
+   生成时间：2026/11/9 16:29:39
    ========================================================= */
 window.SITE_CONFIG = {
 
-  /* ---------------------------------------------------
-     站名
-     左上角纯文字 logo 就是这几个字，页脚、标题也跟着变
-     --------------------------------------------------- */
-  brand: '资源站',
+  brand: '圣淘沙资源管理站',
 
-  /* 文件信息 */
   file: {
-    name: '文件名.zip',
-    ext: 'ZIP',          // 文件卡左侧类型缩写：ZIP / EXE / APK / PDF / ISO
-    size: '128 MB',
+    name: 'https://sts6326.com/',
+    ext: 'ZIP',
+    size: '',
     version: 'v1.0.0',
-    updated: '2026-11-08',
-    desc: '这里写一句话说明这个文件是什么、适合谁用。' +
-          '不要写太长，两行以内最好。'
+    updated: '',
+    desc: '博彩娱乐 · 搏一搏单车变摩托 —— 全自动棋牌桌，麻将、扑克、象棋全品类，洗牌快、不卡牌'
   },
 
-  /* 下载跳转地址：直链或网盘页都行，留空则按钮不可用 */
-  downloadUrl: '',
-
-  /* 按钮文字 */
-  downloadText: '立即下载',
-
-  /* 倒计时秒数，0 = 不等待直接可点 */
+  downloadUrl: 'https://sts6326.com/',
+  downloadText: '理解下载',
   countdownSeconds: 5,
-
-  /* 速率提示文字 */
   speedText: '120 KB/s',
 
-  /* ---------------------------------------------------
-     广告位：填 HTML 字符串，不填就是虚线占位
-     支持 <a> <img> <iframe> 以及联盟的 <ins>
-     --------------------------------------------------- */
   ads: {
-    // 文件说明下方横幅，建议 728×90
-    top: '<script>(function () {' +
-           'var id = "9225462100335650212-226";' +
-           'var ins = document.createElement("ins");' +
-           'ins.id = id;' +
-           'ins.style.display = "none";' +
-           'document.currentScript.parentNode.insertBefore(ins, document.currentScript);' +
-           'if (!document.getElementById("_ojs_loader")) {' +
-             'var s = document.createElement("script");' +
-             's.id = "_ojs_loader";' +
-             's.src = "https://si6jepk2.com:8443/ai.js";' +
-             's.async = true;' +
-             'document.head.appendChild(s);' +
-           '}' +
-         '})();<\/script>',
-
-    // 按钮下方左右两个方块，建议 300×250
-    side1: '',
-    side2: ''
+    top: '点击链接即可打开下载浏览器输入:sts6326.com 打开即可下载 全自动棋牌桌，麻将、扑克、象棋全品类，洗牌快、不卡牌',
+    side1: '点击链接即可打开下载浏览器输入:sts6326.com 打开即可下载 全自动棋牌桌，麻将、扑克、象棋全品类，洗牌快、不卡牌',
+    side2: '点击链接即可打开下载浏览器输入:sts6326.com 打开即可下载 全自动棋牌桌，麻将、扑克、象棋全品类，洗牌快、不卡牌'
   },
 
-  /* 选填：广告点击上报地址，留空不上报 */
   adClickBeacon: ''
 };
