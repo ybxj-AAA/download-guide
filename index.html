@@ -4,39 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="site-verification" content="f4ca4c0681fa55b7fed2f935672162be" />
   <meta name="theme-color" content="#f3f4f1">
   <title>文件下载</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231c1f1c'/%3E%3Ctext x='16' y='22' font-size='15' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='%23f3f4f1'%3E资%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <header class="bar"><div class="bar-in"><a class="mark" href="./"><span class="mark-name" id="brandName">资源站</span></a><span class="bar-tag">文件下载</span></div></header>
+
+  <header class="bar">
+    <div class="bar-in">
+      <a class="mark" href="./" aria-label="返回首页">
+        <span class="mark-name" id="brandName">资源站</span>
+      </a>
+      <span class="bar-tag">文件下载</span>
+    </div>
+  </header>
+
   <div class="page">
-    <div class="crumb"><a href="./">资源站</a><span>/</span><a href="./">工具软件</a><span>/</span><em id="crName">文件下载</em></div>
+
+    <div class="crumb">
+      <a href="./">首页</a>
+      <span>/</span>
+      <a href="./">工具软件</a>
+      <span>/</span>
+      <em id="crName">文件下载</em>
+    </div>
+
     <article class="sheet">
+
       <div class="sheet-head">
         <div class="fico" id="fIco" aria-hidden="true">ZIP</div>
         <div class="sheet-title">
           <h1 id="fName">文件名</h1>
-          <p class="meta"><span id="fSize">—</span><i></i><span id="fVer">—</span><i></i><span id="fDate">—</span><span class="pill">已验签</span></p>
+          <p class="meta">
+            <span id="fSize">—</span><i></i>
+            <span id="fVer">—</span><i></i>
+            <span id="fDate">—</span>
+            <span class="pill">已验签</span>
+          </p>
         </div>
       </div>
+
       <p class="lede" id="fDesc">文件说明。</p>
-      <div class="ad-slot ad-wide" data-slot="top" aria-label="广告"><span class="ad-tag">广告</span></div>
+
+      <div class="ad-slot ad-wide" data-slot="top" aria-label="广告">
+        <span class="ad-tag">广告</span>
+      </div>
+
       <div class="gate">
-        <div class="gate-row"><span class="gate-label">当前速率限制</span><span class="gate-speed" id="gSpeed">—</span></div>
+        <div class="gate-row">
+          <span class="gate-label">当前速率限制</span>
+          <span class="gate-speed" id="gSpeed">—</span>
+        </div>
         <div class="line"><span class="line-bar" id="gBar"></span></div>
         <p class="gate-count" id="gCount">正在生成下载地址…</p>
       </div>
-      <a class="dl" id="dlBtn" href="#" aria-disabled="true"><span id="dlTxt">请稍候</span></a>
+
+      <a class="dl" id="dlBtn" href="#" aria-disabled="true" rel="noopener noreferrer">
+        <span id="dlTxt">请稍候</span>
+      </a>
+
       <p class="note">如无法开始下载，请关闭广告拦截插件后刷新本页重试。</p>
+
       <div class="ad-row">
         <div class="ad-slot ad-box" data-slot="side1" aria-label="广告"><span class="ad-tag">广告</span></div>
         <div class="ad-slot ad-box" data-slot="side2" aria-label="广告"><span class="ad-tag">广告</span></div>
       </div>
-      <section class="tips"><h2>下载前请确认</h2><ul><li>本站不存储文件，链接均指向官方源或网盘。</li><li>如提示文件损坏，请重新下载。</li><li>解压密码以页面标注为准。</li></ul></section>
+
+      <section class="tips">
+        <h2>下载前请确认</h2>
+        <ul>
+          <li>本站不存储文件，链接均指向官方源或网盘。</li>
+          <li>如提示文件损坏，请重新下载，不要使用下载工具断点续传。</li>
+          <li>解压密码以页面标注为准。</li>
+        </ul>
+      </section>
+
     </article>
   </div>
-  <footer class="foot"><p><span id="footBrand">资源站</span> · 本站不存储任何文件资源</p></footer>
+
+  <footer class="foot">
+    <p><span id="footBrand">资源站</span> · 本站不存储任何文件资源</p>
+  </footer>
+
   <script src="assets/config.js"></script>
   <script src="assets/main.js"></script>
 </body>
